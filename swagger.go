@@ -17,7 +17,9 @@ import (
 type Config struct {
 	//The url pointing to API definition (normally swagger.json or swagger.yaml). Default is `doc.json`.
 	URL         string
+	OAuth2      string
 	DeepLinking bool
+
 }
 
 // URL presents the url pointing to API definition (normally swagger.json or swagger.yaml).
@@ -32,6 +34,12 @@ func DeepLinking(deepLinking bool) func(c *Config) {
 	return func(c *Config) {
 		c.DeepLinking = deepLinking
 	}
+}
+
+func OAuth2( oauth string)   func(c *Config) {
+  return func(c *Config) {
+    c.OAuth2 = oauth
+  }
 }
 
 // WrapHandler wraps `http.Handler` into `gin.HandlerFunc`.
@@ -61,6 +69,7 @@ func CustomWrapHandler(config *Config, h *webdav.Handler) gin.HandlerFunc {
 
 		type swaggerUIBundle struct {
 			URL         string
+			OAuth2      string
 			DeepLinking bool
 		}
 
@@ -91,6 +100,7 @@ func CustomWrapHandler(config *Config, h *webdav.Handler) gin.HandlerFunc {
 		case "index.html":
 			index.Execute(c.Writer, &swaggerUIBundle{
 				URL:         config.URL,
+				OAuth2:      config.OAuth2,
 				DeepLinking: config.DeepLinking,
 			})
 		case "doc.json":
@@ -214,6 +224,7 @@ window.onload = function() {
   // Build a system
   const ui = SwaggerUIBundle({
     url: "{{.URL}}",
+    oauth2RedirectUrl: "{{.OAuth2}}"
     dom_id: '#swagger-ui',
     validatorUrl: null,
     presets: [

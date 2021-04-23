@@ -14,3 +14,5 @@ dist
 .idea
 vendor
 .envrc
+
+go.sum
