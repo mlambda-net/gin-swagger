@@ -224,7 +224,7 @@ window.onload = function() {
   // Build a system
   const ui = SwaggerUIBundle({
     url: "{{.URL}}",
-    oauth2RedirectUrl: "{{.OAuth2}}"
+    oauth2RedirectUrl: "{{.OAuth2}}",
     dom_id: '#swagger-ui',
     validatorUrl: null,
     presets: [
